@@ -4,7 +4,7 @@ function ExportPage() {
     return `
         ${AppState.queryResults.length === 0 ? `
             <div class="alert alert-info">
-                ℹ️ No data available to export. Execute a query first to generate exportable data.
+                [INFO] No data available to export. Execute a query first to generate exportable data.
             </div>
         ` : ''}
 
