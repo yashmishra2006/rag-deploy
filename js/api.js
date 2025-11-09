@@ -135,7 +135,8 @@ const API = {
 
     // Vector/RAG Queries
     async vectorRagQuery(query, dbKey = 'primary', collectionName = null, topK = 20) {
-        return await this.post('/query/vector-rag', {
+        // Use MongoDB Atlas vector search instead of Qdrant
+        return await this.post('/query/mongodb-vector-search', {
             query: query,
             db_key: dbKey,
             collection_name: collectionName,

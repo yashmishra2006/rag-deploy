@@ -1853,6 +1853,162 @@ Chart Configuration:"""
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/query/mongodb-vector-search")
+async def mongodb_vector_search(request: QueryRequest):
+    """Search directly in MongoDB Atlas using vector search (skip Qdrant)"""
+    try:
+        # Get database instance
+        db_instance = databases.get(request.db_key or "primary")
+        if db_instance is None:
+            raise HTTPException(status_code=400, detail=f"Database '{request.db_key}' not found")
+        
+        # Get all collections in the database
+        collection_names = await db_instance.list_collection_names()
+        print(f"📚 Found {len(collection_names)} collections in database")
+        
+        # Build schema info
+        schema_parts = []
+        for coll_name in collection_names[:20]:  # Limit to first 20 collections
+            sample = await db_instance[coll_name].find_one()
+            if sample:
+                fields = [f for f in sample.keys() if f != '_id'][:10]
+                schema_parts.append(f"{coll_name}: {', '.join(fields)}")
+        
+        schema_info = "\n".join(schema_parts) if schema_parts else "No collections found"
+        
+        # Extract keywords using Gemini
+        print(f"🔍 Query: {request.query}")
+        keyword_prompt = f"""Extract 3-5 key search terms from this query for semantic search.
+
+Database Collections: {', '.join(collection_names)}
+Schema: {schema_info}
+
+Query: "{request.query}"
+
+Return ONLY keywords separated by spaces:"""
+        
+        keyword_response = llm_model.generate_content(keyword_prompt)
+        search_keywords = keyword_response.text.strip()
+        quota_manager.track_llm()
+        print(f"🎯 Keywords: {search_keywords}")
+        
+        # Create embedding for keywords
+        query_embedding = await get_query_embedding(search_keywords)
+        
+        # Search across all collections with vector indexes
+        all_results = []
+        
+        # Try to search collections that might have vector indexes
+        for coll_name in collection_names:
+            try:
+                # MongoDB Atlas Vector Search aggregation pipeline
+                pipeline = [
+                    {
+                        "$vectorSearch": {
+                            "index": "vector_index",  # Your Atlas vector search index name
+                            "path": "embedding",      # Field containing the vector
+                            "queryVector": query_embedding,
+                            "numCandidates": 100,
+                            "limit": request.top_k
+                        }
+                    },
+                    {
+                        "$project": {
+                            "_id": 1,
+                            "score": {"$meta": "vectorSearchScore"},
+                            "text": 1,
+                            "content": 1,
+                            "title": 1,
+                            "description": 1
+                        }
+                    }
+                ]
+                
+                results = await db_instance[coll_name].aggregate(pipeline).to_list(request.top_k)
+                
+                if results:
+                    print(f"✓ Found {len(results)} results in {coll_name}")
+                    for doc in results:
+                        doc['_collection'] = coll_name
+                        all_results.append(doc)
+                        
+            except Exception as e:
+                # Collection might not have vector index, skip it
+                continue
+        
+        if not all_results:
+            return {
+                "query": request.query,
+                "search_keywords": search_keywords,
+                "error": "No vector search results found. Make sure collections have 'vector_index' configured.",
+                "hint": "Check MongoDB Atlas vector search index configuration"
+            }
+        
+        # Sort by score and limit
+        all_results.sort(key=lambda x: x.get('score', 0), reverse=True)
+        all_results = all_results[:request.top_k]
+        
+        # Build context from results
+        context_parts = []
+        sources = []
+        
+        for doc in all_results:
+            # Extract text from various possible fields
+            text = (
+                doc.get('text') or 
+                doc.get('content') or 
+                doc.get('description') or 
+                doc.get('title') or 
+                str(doc.get('_id'))
+            )
+            
+            collection = doc.get('_collection', 'unknown')
+            score = doc.get('score', 0)
+            
+            context_parts.append(f"[Collection: {collection}, Score: {score:.3f}]\n{text}")
+            
+            sources.append({
+                "db_key": request.db_key or "primary",
+                "collection": collection,
+                "doc_id": str(doc.get('_id')),
+                "similarity": score,
+                "text_preview": str(text)[:200]
+            })
+        
+        context = "\n\n".join(context_parts)
+        
+        # Generate answer using Gemini
+        prompt = f"""Based on the following context from MongoDB, answer the user's question.
+
+Context:
+{context}
+
+Question: {request.query}
+
+Provide a clear, concise answer based on the context."""
+        
+        response = llm_model.generate_content(prompt)
+        quota_manager.track_llm()
+        
+        print(f"✓ Generated answer from {len(sources)} sources")
+        
+        return {
+            "query": request.query,
+            "search_keywords": search_keywords,
+            "answer": response.text,
+            "method": "mongodb_atlas_vector_search",
+            "embedding_model": "all-MiniLM-L6-v2",
+            "embedding_dimensions": 384,
+            "sources": sources,
+            "total_sources": len(sources),
+            "collections_searched": list(set([s["collection"] for s in sources])),
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+    except Exception as e:
+        print(f"❌ Error in MongoDB vector search: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.post("/query/hybrid-search")
 async def hybrid_search(request: HybridSearchRequest):
     """Advanced hybrid search with multi-database support"""
