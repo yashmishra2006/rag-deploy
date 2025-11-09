@@ -3,10 +3,10 @@
 function DocsPage() {
     return `
         <div class="container">
-            <h2 class="mb-2" style="color: var(--primary-color);">📚 Documentation</h2>
+            <h2 class="mb-2" style="color: var(--primary-color);">Documentation</h2>
 
             <div class="card">
-                <h3>🚀 Getting Started</h3>
+                <h3>Getting Started</h3>
                 <p style="margin-bottom: 1rem;">Follow these simple steps to start analyzing your database:</p>
                 <ol style="margin-left: 1.5rem; line-height: 2;">
                     <li><strong style="color: var(--primary-color);">Upload Your Database:</strong> Navigate to the Upload page and select your database file (CSV, JSON, or SQL dump). You can also drag and drop files directly.</li>
@@ -129,7 +129,7 @@ function DocsPage() {
             </div>
 
             <div class="insights-box mt-2">
-                <h4>🔄 Regular Updates</h4>
+                <h4>Regular Updates</h4>
                 <p>We're constantly improving DB RAG Analytics. Recent updates include:
                 <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
                     <li>Enhanced AI query interpretation</li>

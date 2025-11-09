@@ -3,15 +3,15 @@
 function AboutPage() {
     return `
         <div class="container">
-            <h2 class="mb-2" style="color: var(--primary-color);">ℹ️ About DB RAG Analytics</h2>
+            <h2 class="mb-2" style="color: var(--primary-color);">About DB RAG Analytics</h2>
 
             <div class="hero">
-                <h1>🎯 Our Mission</h1>
+                <h1>Our Mission</h1>
                 <p>To democratize data analytics by making database querying accessible to everyone through natural language processing and AI-powered insights.</p>
             </div>
 
             <div class="card mt-2">
-                <h3>🌟 What We Do</h3>
+                <h3>What We Do</h3>
                 <p style="margin-bottom: 1rem;">
                     DB RAG Analytics is an AI-driven platform that bridges the gap between complex databases and everyday users. 
                     We believe that data analysis shouldn't require deep technical knowledge or SQL expertise. 
@@ -63,22 +63,22 @@ function AboutPage() {
             </div>
 
             <div class="card mt-2">
-                <h3>📈 Key Features</h3>
+                <h3>Key Features</h3>
                 <div class="card-grid" style="margin-top: 1rem;">
                     <div class="insights-box">
-                        <h4>🤖 AI-Powered Queries</h4>
+                        <h4>AI-Powered Queries</h4>
                         <p>Advanced NLP models understand your questions and convert them to optimized database queries automatically.</p>
                     </div>
                     <div class="insights-box">
-                        <h4>📊 Smart Visualizations</h4>
+                        <h4>Smart Visualizations</h4>
                         <p>Automatic chart generation with intelligent type selection based on your data characteristics.</p>
                     </div>
                     <div class="insights-box">
-                        <h4>🔍 Insight Generation</h4>
+                        <h4>Insight Generation</h4>
                         <p>AI analyzes your data to detect anomalies, trends, and patterns you might have missed.</p>
                     </div>
                     <div class="insights-box">
-                        <h4>⚡ Real-Time Processing</h4>
+                        <h4>Real-Time Processing</h4>
                         <p>Fast query execution and instant visualization updates for seamless data exploration.</p>
                     </div>
                     <div class="insights-box">
@@ -93,11 +93,11 @@ function AboutPage() {
             </div>
 
             <div class="card mt-2">
-                <h3>🚀 Roadmap</h3>
+                <h3>Roadmap</h3>
                 <p style="margin-bottom: 1rem;">We're constantly evolving. Here's what's coming:</p>
                 <div style="margin-left: 1rem;">
                     <div style="margin-bottom: 1rem;">
-                        <h4 style="color: var(--success-color); margin-bottom: 0.5rem;">✓ Phase 1 - Complete</h4>
+                        <h4 style="color: var(--success-color); margin-bottom: 0.5rem;">[COMPLETE] Phase 1</h4>
                         <ul style="margin-left: 1.5rem;">
                             <li>File upload support (CSV, JSON, SQL)</li>
                             <li>Natural language query interface</li>
@@ -106,7 +106,7 @@ function AboutPage() {
                         </ul>
                     </div>
                     <div style="margin-bottom: 1rem;">
-                        <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">⏳ Phase 2 - In Progress</h4>
+                        <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">[IN PROGRESS] Phase 2</h4>
                         <ul style="margin-left: 1.5rem;">
                             <li>Live database connections (MySQL, PostgreSQL, MongoDB)</li>
                             <li>Advanced chart types and customization</li>
@@ -115,7 +115,7 @@ function AboutPage() {
                         </ul>
                     </div>
                     <div style="margin-bottom: 1rem;">
-                        <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">🔮 Phase 3 - Planned</h4>
+                        <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">[PLANNED] Phase 3</h4>
                         <ul style="margin-left: 1.5rem;">
                             <li>Machine learning model integration</li>
                             <li>Predictive analytics</li>

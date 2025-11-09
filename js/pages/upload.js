@@ -203,7 +203,7 @@ function UploadPage() {
                         <p class="card-subtitle">Successfully detected and parsed your database structure</p>
                     </div>
                     <div class="alert alert-success">
-                        ✓ File uploaded successfully
+                        [SUCCESS] File uploaded successfully
                     </div>
                     <div class="table-container">
                         <table>
@@ -657,10 +657,10 @@ async function startVectorization() {
                     Collection: ${collectionName}<br>
                     Documents Vectorized: ${result.documents_vectorized}<br>
                     Chunks Created: ${result.total_chunks}<br>
-                    Status: ✓ Complete
+                    Status: [COMPLETE]
                 `;
                 document.getElementById('vectorizationDetails').innerHTML = details;
-                showAlert('✓ Vectorization completed successfully!', 'success');
+                showAlert('Vectorization completed successfully!', 'success');
             } else if (result.status === 'skipped') {
                 document.getElementById('vectorizationDetails').innerHTML = `
                     Status: Skipped<br>
@@ -732,7 +732,7 @@ async function startVectorizationFallback() {
                 Vectors in Database: ${result.total_vectors || 'N/A'}
             `;
             document.getElementById('vectorizationDetails').innerHTML = details;
-            showAlert('✓ Vectorization completed successfully!', 'success');
+            showAlert('Vectorization completed successfully!', 'success');
             
             // Refresh collection list to show updated vectorization status
             await loadCollectionsForVectorization();
@@ -768,9 +768,9 @@ async function vectorizeAllInCurrentDb() {
     
     const message = `Vectorize all collections in "${db.name}" (${dbKey})?\n\n` +
                     `This will:\n` +
-                    `✓ Auto-detect text fields in each collection\n` +
-                    `✓ Skip already vectorized collections\n` +
-                    `✓ Create AI embeddings for semantic search\n\n` +
+                    `[OK] Auto-detect text fields in each collection\n` +
+                    `[OK] Skip already vectorized collections\n` +
+                    `[OK] Create AI embeddings for semantic search\n\n` +
                     `This may take some time depending on data size.`;
     
     if (!confirm(message)) {
@@ -790,11 +790,11 @@ async function useSyncAllEndpoint(dbKey, dbName) {
         progressDiv.style.marginTop = '1rem';
         progressDiv.innerHTML = `
             <div class="card-header">
-                <h3 class="card-title">🔄 Vectorizing ${dbName}</h3>
+                <h3 class="card-title">Vectorizing ${dbName}</h3>
             </div>
             <div id="progress-content" style="padding: 1rem;">
                 <div id="progress-messages" style="max-height: 300px; overflow-y: auto; font-family: monospace; font-size: 0.875rem; background: var(--background); padding: 1rem; border-radius: 4px;">
-                    <div>⏳ Initializing vectorization...</div>
+                    <div>[PROCESSING] Initializing vectorization...</div>
                 </div>
                 <div class="progress-container" style="margin-top: 1rem;">
                     <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
@@ -811,7 +811,7 @@ async function useSyncAllEndpoint(dbKey, dbName) {
         const progressText = document.getElementById('progress-text');
         
         const addMessage = (msg, type = 'info') => {
-            const icon = type === 'success' ? '✓' : type === 'error' ? '✗' : type === 'skip' ? '⊘' : '⏳';
+            const icon = type === 'success' ? '[OK]' : type === 'error' ? '[ERROR]' : type === 'skip' ? '[SKIP]' : '[...]';
             const color = type === 'success' ? 'var(--accent-color)' : type === 'error' ? 'var(--error-color)' : 'var(--text-secondary)';
             const line = document.createElement('div');
             line.style.color = color;
@@ -857,7 +857,7 @@ async function useSyncAllEndpoint(dbKey, dbName) {
         progressText.textContent = `Complete: ${result.successful} successful, ${result.skipped} skipped, ${result.errors} errors`;
         
         // Show final summary
-        const summary = `✓ Vectorization complete for ${dbName}!\n` +
+        const summary = `Vectorization complete for ${dbName}!\n` +
                         `Successfully vectorized: ${result.successful} | Skipped: ${result.skipped} | Errors: ${result.errors}`;
         showAlert(summary, result.successful > 0 ? 'success' : 'info');
         

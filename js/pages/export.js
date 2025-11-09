@@ -46,7 +46,7 @@ function ExportPage() {
             </div>
 
             <div class="card export-option-card">
-                <div class="export-icon">📊</div>
+                <div class="export-icon">[CHART]</div>
                 <div class="card-header">
                     <h3 class="card-title">Export Chart</h3>
                     <p class="card-subtitle">Save visualization as image</p>

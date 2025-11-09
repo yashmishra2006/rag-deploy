@@ -1,6 +1,6 @@
 {
   "databases": {
-    "fake": {
+    "innov-db": {
       "uri": "mongodb+srv://arkin:kansrarkin@cluster0.pzgo5g9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
       "name": "Cluster0",
       "description": "Primary database"
@@ -13,6 +13,11 @@
     "primary": {
       "uri": "mongodb+srv://yash:yashmishra@cluster0.i60zam8.mongodb.net/?appName=Cluster0",
       "name": "sample_analytics",
+      "description": "User-added database"
+    },
+    "arkindb": {
+      "uri": "mongodb+srv://yash:yashmishra@cluster0.i60zam8.mongodb.net/?appName=Cluster0",
+      "name": "arkin",
       "description": "User-added database"
     }
   }

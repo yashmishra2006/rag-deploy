@@ -53,6 +53,8 @@ function renderPage(page) {
     switch(page) {
         case 'dashboard':
             content.innerHTML = DashboardPage();
+            // Hide loading immediately after render - data is already loaded
+            setTimeout(() => hideDashboardLoading(), 100);
             break;
         case 'upload':
             content.innerHTML = UploadPage();
@@ -200,6 +202,28 @@ function generateSampleData() {
             { product: 'Headphones', amount: 150, date: '2024-01-19', customer: 'Charlie Brown' }
         ]
     };
+}
+
+// Hide dashboard loading overlay
+function hideDashboardLoading() {
+    const overlay = document.getElementById('dashboardLoadingOverlay');
+    if (overlay) {
+        overlay.classList.add('hidden');
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 300);
+    }
+}
+
+// Show dashboard loading overlay
+function showDashboardLoading() {
+    const overlay = document.getElementById('dashboardLoadingOverlay');
+    if (overlay) {
+        overlay.style.display = 'flex';
+        setTimeout(() => {
+            overlay.classList.remove('hidden');
+        }, 10);
+    }
 }
 
 // Initialize with sample schema for demo purposes

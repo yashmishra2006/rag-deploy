@@ -4,6 +4,14 @@ function DashboardPage() {
     const stats = getStats();
     
     return `
+        <!-- Loading Overlay -->
+        <div id="dashboardLoadingOverlay" class="dashboard-loading-overlay">
+            <div class="loading-spinner-container">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading dashboard data...</div>
+            </div>
+        </div>
+
         <!-- Database Selector -->
         <div class="card mb-2">
             <div class="card-header">
@@ -98,8 +106,8 @@ function getStats() {
 async function switchDashboardDatabase(dbKey) {
     AppState.currentDatabase = dbKey;
     
-    // Show loading
-    showAlert('Loading database...', 'info');
+    // Show loading overlay
+    showDashboardLoading();
     
     try {
         // Load collections for selected database
@@ -135,9 +143,13 @@ async function switchDashboardDatabase(dbKey) {
         // Re-render dashboard with new data
         navigateTo('dashboard');
         
+        // Hide loading overlay
+        hideDashboardLoading();
+        
         showAlert(`Switched to database: ${dbKey}`, 'success');
     } catch (error) {
         console.error('Failed to switch database:', error);
+        hideDashboardLoading();
         showAlert(`Failed to switch database: ${error.message}`, 'error');
     }
 }
