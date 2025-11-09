@@ -1,0 +1,28 @@
+{
+  "clusters": {
+    "primary": {
+      "collection_name": "synapse_primary",
+      "created_at": "2025-11-09T00:00:00",
+      "dimension": 384,
+      "vector_count": 0,
+      "description": "Primary database Qdrant collection"
+    },
+    "fake": {
+      "collection_name": "synapse_fake",
+      "created_at": "2025-11-09T07:59:41.590242",
+      "dimension": 384,
+      "vector_count": 0
+    },
+    "test": {
+      "collection_name": "synapse_test",
+      "created_at": "2025-11-09T07:59:44.224660",
+      "dimension": 384,
+      "vector_count": 0
+    }
+  },
+  "metadata": {
+    "last_updated": "2025-11-09T00:00:00",
+    "version": "1.0",
+    "total_clusters": 1
+  }
+}
