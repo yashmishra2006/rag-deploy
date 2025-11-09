@@ -137,6 +137,12 @@ async function loadDatabasesForQuery() {
         if (!AppState.selectedDatabase && AppState.currentDatabase) {
             AppState.selectedDatabase = AppState.currentDatabase;
             select.value = AppState.currentDatabase;
+            // Load database info for the default selected database
+            await updateQueryDatabase();
+        } else if (AppState.selectedDatabase) {
+            // If there's already a selected database, make sure it's shown
+            select.value = AppState.selectedDatabase;
+            await updateQueryDatabase();
         }
         
     } catch (error) {
@@ -221,6 +227,9 @@ async function processQueryWithAPI(query) {
     try {
         // Check if database is selected
         const dbKey = AppState.selectedDatabase;
+        console.log('AppState.selectedDatabase:', AppState.selectedDatabase);
+        console.log('AppState.currentDatabase:', AppState.currentDatabase);
+        
         if (!dbKey) {
             showAlert('Please select a database to query', 'error');
             return;

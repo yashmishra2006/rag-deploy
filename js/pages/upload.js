@@ -114,7 +114,7 @@ function UploadPage() {
                 </div>
                 
                 <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
-                    <div class="upload-icon">[FILE]</div>
+                    <div class="upload-icon">📁</div>
                     <p class="upload-text-main">Drop your file here or click to browse</p>
                     <p class="upload-text-sub">Drag and drop files to upload instantly</p>
                     <input type="file" id="fileInput" accept=".csv,.json" style="display: none;">
