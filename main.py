@@ -22,6 +22,11 @@ import re
 import uuid
 import hashlib
 from collections import defaultdict
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Sentence Transformers for embeddings
 from sentence_transformers import SentenceTransformer
@@ -47,14 +52,22 @@ app.add_middleware(
 )
 
 # ============= CONFIGURATION =============
-# Qdrant Cloud Configuration
-QDRANT_URL = "https://ced9ad18-587c-4884-a548-1a9e6736000b.europe-west3-0.gcp.cloud.qdrant.io"
-QDRANT_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.6UraLX3SGpApwGzn59FO8lp8ddBBjLLurHV8zInSBHY"
+# Load from environment variables
+QDRANT_URL = os.getenv("QDRANT_URL")
+QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
 QDRANT_COLLECTION_NAME = "synapse_vectors"
 QDRANT_TIMEOUT = 120
 
 # Gemini Configuration (for LLM only)
-GEMINI_API_KEY = "AIzaSyA5vZNNZndTKkV6yrLq2dmjFYrWJ7hKhxI"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+# Validate required environment variables
+if not GEMINI_API_KEY:
+    raise ValueError("GEMINI_API_KEY not found in environment variables")
+if not QDRANT_URL:
+    raise ValueError("QDRANT_URL not found in environment variables")
+if not QDRANT_API_KEY:
+    raise ValueError("QDRANT_API_KEY not found in environment variables")
 
 # Sentence Transformers Configuration
 EMBEDDING_MODEL_NAME = 'all-MiniLM-L6-v2'

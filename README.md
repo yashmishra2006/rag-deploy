@@ -81,14 +81,19 @@ cd rag-deploy
 pip install -r requirements.txt
 ```
 
-3. Configure environment variables in `.env`:
-```
-GOOGLE_API_KEY=your_gemini_api_key
-QDRANT_API_KEY=your_qdrant_api_key
-QDRANT_URL=your_qdrant_cloud_url
+3. Create a `.env` file from the template:
+```bash
+cp .env.example .env
 ```
 
-4. Set up MongoDB connections in `database_connections.json`:
+4. Configure environment variables in `.env`:
+```
+GEMINI_API_KEY=your_gemini_api_key_here
+QDRANT_URL=your_qdrant_cloud_url_here
+QDRANT_API_KEY=your_qdrant_api_key_here
+```
+
+5. Set up MongoDB connections in `database_connections.json`:
 ```json
 {
   "databases": [
@@ -103,7 +108,7 @@ QDRANT_URL=your_qdrant_cloud_url
 }
 ```
 
-5. Configure Qdrant clusters in `qdrant_clusters.json`:
+6. Configure Qdrant clusters in `qdrant_clusters.json`:
 ```json
 {
   "clusters": {
